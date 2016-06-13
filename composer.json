@@ -1,0 +1,50 @@
+{
+    "name": "fedora/autoloader",
+    "description": "Fedora PHP Autoloader",
+    "keywords": [
+        "fedora",
+        "autoload",
+        "autoloader",
+        "psr-4"
+    ],
+    "homepage": "https://github.com/php-fedora/autoloader",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Shawn Iwinski",
+            "email": "shawn@iwin.ski"
+        },
+        {
+            "name": "Remi Collet",
+            "email": "remi@fedoraproject.org"
+        }
+    ],
+    "require": {
+        "php": ">= 5.3.3"
+    },
+    "require-dev": {
+        "fabpot/php-cs-fixer": "*",
+        "phpunit/phpunit": "*",
+        "phpdocumentor/phpdocumentor": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fedora\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Fedora\\Autoloader\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "cs": [
+            "@cs-src",
+            "@cs-tests"
+        ],
+        "cs-src": "php-cs-fixer fix src || [ $? = 1 ]",
+        "cs-tests": "php-cs-fixer fix tests || [ $? = 1 ]",
+        "tests": "phpunit",
+        "phpdoc": "phpdoc -d src -i src/autoload.php -t phpdoc"
+    }
+}
