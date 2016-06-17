@@ -1,0 +1,14 @@
+<?php
+$vendor = '/usr/share/php';
+
+if (!class_exists('Fedora\\Autoloader')) {
+    require_once "$vendor/Fedora/autoload.php";
+}
+
+\Fedora\Autoloader::addClassMap(
+    array(
+        ___CLASSLIST___
+    ),
+    __DIR__
+);
+
