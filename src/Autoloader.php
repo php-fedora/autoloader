@@ -123,7 +123,11 @@ class Autoloader
             static::register();
         }
         $path = rtrim($path, DIRECTORY_SEPARATOR);
-        static::$classMap[$path] = $classMap;
+        if (isset(static::$classMap[$path])) {
+            static::$classMap[$path] = array_merge($classMap, static::$classMap[$path]);
+        } else {
+            static::$classMap[$path] = $classMap;
+        }
     }
 
     /**

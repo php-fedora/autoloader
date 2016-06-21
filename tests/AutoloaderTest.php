@@ -42,5 +42,17 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
         require __DIR__ . '/fixtures/Foo/classmap.php';
         $this->assertTrue(class_exists('Foo\\Bar'));
     }
+
+    /**
+     * @covers Fedora::Autoloader::addClassMap
+     **/
+    public function testAddClassMapTemplateOrder() {
+        $this->assertFalse(class_exists('Foo\\Bar'));
+        require __DIR__ . '/fixtures/Foo/classmap.php';
+        require __DIR__ . '/fixtures/Foo2/classmap.php';
+
+        // Ensure first loaded is used
+		$this->assertEquals('one', \Foo\Bar::order);
+    }
 }
 
