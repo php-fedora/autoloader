@@ -16,7 +16,7 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
      **/
     public function testAddPsr4() {
         $this->assertFalse(class_exists('Foo\\Bar'));
-        Autoloader::addPsr4('Foo', __DIR__ . '/fixtures');
+        Autoloader::addPsr4('Foo', __DIR__ . '/fixtures/Foo');
         $this->assertTrue(class_exists('Foo\\Bar'));
     }
 
@@ -29,7 +29,7 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
             array(
                 'foo\\bar' => '/Bar.php'
             ),
-            __DIR__ . '/fixtures'
+            __DIR__ . '/fixtures/Foo'
         );
         $this->assertTrue(class_exists('Foo\\Bar'));
     }
@@ -39,7 +39,7 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
      **/
     public function testAddClassMapTemplate() {
         $this->assertFalse(class_exists('Foo\\Bar'));
-        require __DIR__ . '/fixtures/classmap.php';
+        require __DIR__ . '/fixtures/Foo/classmap.php';
         $this->assertTrue(class_exists('Foo\\Bar'));
     }
 }
