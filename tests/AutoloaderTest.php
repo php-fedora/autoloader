@@ -21,6 +21,18 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @covers Fedora::Autoloader::addPsr4
+     **/
+    public function testAddPsr4Order() {
+        $this->assertFalse(class_exists('Foo\\Bar'));
+        Autoloader::addPsr4('Foo', __DIR__ . '/fixtures/Foo2');
+        Autoloader::addPsr4('Foo', __DIR__ . '/fixtures/Foo');
+
+        // Ensure first loaded is used
+		$this->assertEquals('two', \Foo\Bar::order);
+    }
+
+    /**
      * @covers Fedora::Autoloader::addClassMap
      **/
     public function testAddClassMap() {
