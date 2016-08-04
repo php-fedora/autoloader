@@ -9,6 +9,8 @@
  */
 namespace Fedora;
 
+use Fedora\Autoloader\Autoload;
+
 class AutoloaderTest extends \PHPUnit_Framework_TestCase {
 
     /**
@@ -16,7 +18,7 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
      **/
     public function testAddPsr4() {
         $this->assertFalse(class_exists('Foo\\Bar'));
-        Autoloader::addPsr4('Foo', __DIR__ . '/fixtures/Foo');
+        Autoload::addPsr4('Foo', __DIR__ . '/fixtures/Foo');
         $this->assertTrue(class_exists('Foo\\Bar'));
     }
 
@@ -25,8 +27,8 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
      **/
     public function testAddPsr4Order() {
         $this->assertFalse(class_exists('Foo\\Bar'));
-        Autoloader::addPsr4('Foo', __DIR__ . '/fixtures/Foo2');
-        Autoloader::addPsr4('Foo', __DIR__ . '/fixtures/Foo');
+        Autoload::addPsr4('Foo', __DIR__ . '/fixtures/Foo2');
+        Autoload::addPsr4('Foo', __DIR__ . '/fixtures/Foo');
 
         // Ensure first loaded is used
         $this->assertEquals('two', \Foo\Bar::order);
@@ -37,7 +39,7 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
      **/
     public function testAddClassMap() {
         $this->assertFalse(class_exists('Foo\\Bar'));
-        Autoloader::addClassMap(
+        Autoload::addClassMap(
             array(
                 'foo\\bar' => '/Bar.php'
             ),
@@ -79,10 +81,9 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
         // Ensure first loaded is used
         $this->assertEquals('three', \Foo\Bar::order);
 
-        $classmap = Autoloader::getClassMap();
+        $classmap = Autoload::getClassMap();
         $this->assertEquals(2, count($classmap));
         $this->assertArrayHasKey(__DIR__ . '/fixtures/Foo', $classmap);
         $this->assertArrayHasKey(__DIR__ . '/fixtures/Foo2', $classmap);
     }
 }
-

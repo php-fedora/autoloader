@@ -9,4 +9,4 @@
  */
 require_once __DIR__.'/Autoloader.php';
 
-Fedora\Autoloader::addPsr4('Fedora', __DIR__);
+\Fedora\Autoloader\Autoload::addPsr4('Fedora\\Autoloader\\', __DIR__);
