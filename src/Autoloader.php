@@ -116,17 +116,18 @@ class Autoloader
     /**
      *
      */
-    public static function addClassMap(array $classMap)
+    public static function addClassMap(array $classMap, $path)
     {
         // If not registered, register.
         if (!static::isRegistered()) {
             static::register();
         }
-
-        static::$classMap = array_merge(
-            static::$classMap,
-            $classMap
-        );
+        $path = rtrim($path, DIRECTORY_SEPARATOR);
+        if (isset(static::$classMap[$path])) {
+            static::$classMap[$path] = array_merge($classMap, static::$classMap[$path]);
+        } else {
+            static::$classMap[$path] = $classMap;
+        }
     }
 
     /**
@@ -190,17 +191,19 @@ class Autoloader
      */
     public static function findFile($class)
     {
-        if (isset(static::$classMap[$class]) && file_exists(static::$classMap[$class])) {
-            return static::$classMap[$class];
-        } else {
-            foreach (static::$psr4 as list($prefix, $path)) {
-                if (0 === strpos($class, $prefix)) {
-                    $classWithoutPrefix = substr($class, strlen($prefix));
-                    $file = $path.str_replace('\\', DIRECTORY_SEPARATOR, $classWithoutPrefix).'.php';
+        $lower = strtolower($class);
+        foreach (static::$classMap as $dir => $classmap) {
+            if (isset($classmap[$lower]) && file_exists($dir . $classmap[$lower])) {
+                return $dir . $classmap[$lower];
+            }
+        }
+        foreach (static::$psr4 as list($prefix, $path)) {
+            if (0 === strpos($class, $prefix)) {
+                $classWithoutPrefix = substr($class, strlen($prefix));
+                $file = $path.str_replace('\\', DIRECTORY_SEPARATOR, $classWithoutPrefix).'.php';
 
-                    if (file_exists($file)) {
-                        return $file;
-                    }
+                if (file_exists($file)) {
+                    return $file;
                 }
             }
         }
