@@ -47,11 +47,11 @@ cat <<'AUTOLOAD' | tee src/autoload.php
 <?php
 
 // This library
-require_once '%{_datadir}/php/Fedora/autoload.php';
-\Fedora\Autoloader::addPsr4('Foo\\Bar\\', __DIR__);
+require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
+\Fedora\Autoloader\Autoload::addPsr4('Foo\\Bar\\', __DIR__);
 
 // Dependencies
-\Fedora\Autoloader::dependencies(array(
+\Fedora\Autoloader\Autoload::dependencies(array(
     '%{_datadir}/php/Foo/BazRequired/autoload.php' => true,
     '%{_datadir}/php/Foo/BazOptional/autoload.php' => false,
 ));
@@ -100,11 +100,11 @@ cat <<'AUTOLOAD' | tee src/autoload.php
 <?php
 
 // This library
-require_once '%{_datadir}/php/Fedora/autoload.php';
-\Fedora\Autoloader::addPsr4('Foo\\Bar\\', __DIR__);
+require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
+\Fedora\Autoloader\Autoload::addPsr4('Foo\\Bar\\', __DIR__);
 
 // Dependencies
-\Fedora\Autoloader::dependencies(array(
+\Fedora\Autoloader\Autoload::dependencies(array(
     '%{_datadir}/php/Foo/BazRequired/autoload.php' => true,
     '%{_datadir}/php/Foo/BazOptional/autoload.php' => false,
 ));
@@ -135,7 +135,7 @@ foreach (array(
 
 ```php
 // Dependencies
-\Fedora\Autoloader::dependencies(array(
+\Fedora\Autoloader\Autoload::dependencies(array(
     '%{_datadir}/php/Foo1/autoload.php' => true,
     '%{_datadir}/php/Foo2/autoload.php' => true,
     '%{_datadir}/php/Baz1/autoload.php' => false,

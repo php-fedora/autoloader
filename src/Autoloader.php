@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Fedora;
+namespace Fedora\Autoloader;
 
-class Autoloader
+class Autoload
 {
     /**
      * @var bool Whether self is registered as an autoloader.
