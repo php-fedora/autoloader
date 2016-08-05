@@ -60,6 +60,15 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
     /**
      * @covers Fedora::Autoloader::addClassMap
      **/
+    public function testAddClassMapLowerCase() {
+        $this->assertFalse(class_exists('foo\\bar'));
+        require __DIR__ . '/fixtures/Foo/classmap.php';
+        $this->assertTrue(class_exists('foo\\bar'));
+    }
+
+    /**
+     * @covers Fedora::Autoloader::addClassMap
+     **/
     public function testAddClassMapTemplateOrder() {
         $this->assertFalse(class_exists('Foo\\Bar'));
         require __DIR__ . '/fixtures/Foo/classmap.php';
