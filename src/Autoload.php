@@ -159,9 +159,8 @@ class Autoload
      * ```
      *
      * @param array $dependencies Autoloader dependency files.
-     *     Keys: Dependency autoloader files.
-     *     Values: Whether dependcy autoloader file is required or not.
-     *
+     *                            Keys: Dependency autoloader files.
+     *                            Values: Whether dependcy autoloader file is required or not.
      */
     public static function dependencies(array $dependencies)
     {
@@ -193,8 +192,8 @@ class Autoload
     {
         $lower = strtolower($class);
         foreach (static::$classMap as $dir => $classmap) {
-            if (isset($classmap[$lower]) && file_exists($dir . $classmap[$lower])) {
-                return $dir . $classmap[$lower];
+            if (isset($classmap[$lower]) && file_exists($dir.$classmap[$lower])) {
+                return $dir.$classmap[$lower];
             }
         }
         foreach (static::$psr4 as list($prefix, $path)) {

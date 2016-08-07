@@ -2,7 +2,7 @@
 
 namespace Foo;
 
-class Bar {
-	const order = 'one';
+class Bar
+{
+    const order = 'one';
 }
-

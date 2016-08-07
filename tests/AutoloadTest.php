@@ -11,24 +11,26 @@ namespace Fedora;
 
 use Fedora\Autoloader\Autoload;
 
-class AutoloadTest extends \PHPUnit_Framework_TestCase {
-
+class AutoloadTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @covers Fedora::Autoloader::Autoload::addPsr4
      **/
-    public function testAddPsr4() {
+    public function testAddPsr4()
+    {
         $this->assertFalse(class_exists('Foo\\Bar'));
-        Autoload::addPsr4('Foo', __DIR__ . '/fixtures/Foo');
+        Autoload::addPsr4('Foo', __DIR__.'/fixtures/Foo');
         $this->assertTrue(class_exists('Foo\\Bar'));
     }
 
     /**
      * @covers Fedora::Autoloader::Autoload::addPsr4
      **/
-    public function testAddPsr4Order() {
+    public function testAddPsr4Order()
+    {
         $this->assertFalse(class_exists('Foo\\Bar'));
-        Autoload::addPsr4('Foo', __DIR__ . '/fixtures/Foo2');
-        Autoload::addPsr4('Foo', __DIR__ . '/fixtures/Foo');
+        Autoload::addPsr4('Foo', __DIR__.'/fixtures/Foo2');
+        Autoload::addPsr4('Foo', __DIR__.'/fixtures/Foo');
 
         // Ensure first loaded is used
         $this->assertEquals('two', \Foo\Bar::order);
@@ -37,13 +39,14 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase {
     /**
      * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
-    public function testAddClassMap() {
+    public function testAddClassMap()
+    {
         $this->assertFalse(class_exists('Foo\\Bar'));
         Autoload::addClassMap(
             array(
-                'foo\\bar' => '/Bar.php'
+                'foo\\bar' => '/Bar.php',
             ),
-            __DIR__ . '/fixtures/Foo'
+            __DIR__.'/fixtures/Foo'
         );
         $this->assertTrue(class_exists('Foo\\Bar'));
     }
@@ -51,28 +54,31 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase {
     /**
      * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
-    public function testAddClassMapTemplate() {
+    public function testAddClassMapTemplate()
+    {
         $this->assertFalse(class_exists('Foo\\Bar'));
-        require __DIR__ . '/fixtures/Foo/classmap.php';
+        require __DIR__.'/fixtures/Foo/classmap.php';
         $this->assertTrue(class_exists('Foo\\Bar'));
     }
 
     /**
      * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
-    public function testAddClassMapLowerCase() {
+    public function testAddClassMapLowerCase()
+    {
         $this->assertFalse(class_exists('foo\\bar'));
-        require __DIR__ . '/fixtures/Foo/classmap.php';
+        require __DIR__.'/fixtures/Foo/classmap.php';
         $this->assertTrue(class_exists('foo\\bar'));
     }
 
     /**
      * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
-    public function testAddClassMapTemplateOrder() {
+    public function testAddClassMapTemplateOrder()
+    {
         $this->assertFalse(class_exists('Foo\\Bar'));
-        require __DIR__ . '/fixtures/Foo/classmap.php';
-        require __DIR__ . '/fixtures/Foo2/classmap.php';
+        require __DIR__.'/fixtures/Foo/classmap.php';
+        require __DIR__.'/fixtures/Foo2/classmap.php';
 
         // Ensure first loaded is used
         $this->assertEquals('one', \Foo\Bar::order);
@@ -81,18 +87,19 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase {
     /**
      * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
-    public function testAddClassMapTemplateOrderBis() {
+    public function testAddClassMapTemplateOrderBis()
+    {
         $this->assertFalse(class_exists('Foo\\Bar'));
-        require __DIR__ . '/fixtures/Foo2/classmap2.php';
-        require __DIR__ . '/fixtures/Foo/classmap.php';
-        require __DIR__ . '/fixtures/Foo2/classmap.php';
+        require __DIR__.'/fixtures/Foo2/classmap2.php';
+        require __DIR__.'/fixtures/Foo/classmap.php';
+        require __DIR__.'/fixtures/Foo2/classmap.php';
 
         // Ensure first loaded is used
         $this->assertEquals('three', \Foo\Bar::order);
 
         $classmap = Autoload::getClassMap();
         $this->assertEquals(2, count($classmap));
-        $this->assertArrayHasKey(__DIR__ . '/fixtures/Foo', $classmap);
-        $this->assertArrayHasKey(__DIR__ . '/fixtures/Foo2', $classmap);
+        $this->assertArrayHasKey(__DIR__.'/fixtures/Foo', $classmap);
+        $this->assertArrayHasKey(__DIR__.'/fixtures/Foo2', $classmap);
     }
 }
