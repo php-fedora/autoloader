@@ -11,10 +11,10 @@ namespace Fedora;
 
 use Fedora\Autoloader\Autoload;
 
-class AutoloaderTest extends \PHPUnit_Framework_TestCase {
+class AutoloadTest extends \PHPUnit_Framework_TestCase {
 
     /**
-     * @covers Fedora::Autoloader::addPsr4
+     * @covers Fedora::Autoloader::Autoload::addPsr4
      **/
     public function testAddPsr4() {
         $this->assertFalse(class_exists('Foo\\Bar'));
@@ -23,7 +23,7 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers Fedora::Autoloader::addPsr4
+     * @covers Fedora::Autoloader::Autoload::addPsr4
      **/
     public function testAddPsr4Order() {
         $this->assertFalse(class_exists('Foo\\Bar'));
@@ -35,7 +35,7 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers Fedora::Autoloader::addClassMap
+     * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
     public function testAddClassMap() {
         $this->assertFalse(class_exists('Foo\\Bar'));
@@ -49,7 +49,7 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers Fedora::Autoloader::addClassMap
+     * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
     public function testAddClassMapTemplate() {
         $this->assertFalse(class_exists('Foo\\Bar'));
@@ -58,7 +58,7 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers Fedora::Autoloader::addClassMap
+     * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
     public function testAddClassMapLowerCase() {
         $this->assertFalse(class_exists('foo\\bar'));
@@ -67,7 +67,7 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers Fedora::Autoloader::addClassMap
+     * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
     public function testAddClassMapTemplateOrder() {
         $this->assertFalse(class_exists('Foo\\Bar'));
@@ -79,7 +79,7 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers Fedora::Autoloader::addClassMap
+     * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
     public function testAddClassMapTemplateOrderBis() {
         $this->assertFalse(class_exists('Foo\\Bar'));
