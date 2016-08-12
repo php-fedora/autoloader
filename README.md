@@ -1,5 +1,7 @@
 # Fedora Autoloaders
 
+[![Build Status](https://travis-ci.org/php-fedora/autoloader.svg?branch=master)](https://travis-ci.org/php-fedora/autoloader)
+
 Standardized, simplified, and singleton autoloaders
 
 ## Autoloaders
