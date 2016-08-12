@@ -263,7 +263,12 @@ class Autoload
         }
 
         // PSR-4
-        foreach (static::$psr4 as list($prefix, $path)) {
+        //
+        // NOTE: Cannot use `foreach (static::$psr4 as list($prefix, $path))`
+        //       for PHP < 5.5 compatibility.
+        foreach (static::$psr4 as $psr4) {
+            list($prefix, $path) = $psr4;
+
             if (0 === strpos($class, $prefix)) {
                 $classWithoutPrefix = substr($class, strlen($prefix));
                 $file = $path.str_replace('\\', DIRECTORY_SEPARATOR, $classWithoutPrefix).'.php';
@@ -285,7 +290,11 @@ class Autoload
             }
             $file .= str_replace('_', DIRECTORY_SEPARATOR, $class).'.php';
 
-            foreach (static::$psr0 as list($prefix, $path)) {
+            // NOTE: Cannot use `foreach (static::$psr0 as list($prefix, $path))`
+            //       for PHP < 5.5 compatibility.
+            foreach (static::$psr0 as $psr0) {
+                list($prefix, $path) = $psr0;
+
                 if (empty($prefix) || 0 === strpos($class, $prefix)) {
                     if (file_exists($path.$file)) {
                         return $path.$file;
