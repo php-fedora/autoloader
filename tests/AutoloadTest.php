@@ -102,4 +102,47 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey(__DIR__.'/fixtures/Foo', $classmap);
         $this->assertArrayHasKey(__DIR__.'/fixtures/Foo2', $classmap);
     }
+
+    /**
+     * @covers Fedora::Autoloader::Autoload::addIncludePath
+     **/
+    public function testAddIncludePath()
+    {
+        // Check if PEAR is installed
+        $pear = false;
+        foreach (explode(PATH_SEPARATOR, get_include_path()) as $p) {
+            if (file_exists("$p/PEAR.php")) {
+                $pear = true;
+                break;
+            }
+        }
+        if (!$pear) {
+            $this->markTestSkipped('PEAR not found in include_path');
+        }
+        $this->assertFalse(class_exists('PEAR'));
+        $this->assertFalse(class_exists('PEAR_Installer_Role_Cfg'));
+
+        Autoload::addIncludePath();
+
+        $this->assertTrue(class_exists('PEAR'));
+        $this->assertTrue(class_exists('PEAR_Installer_Role_Cfg'));
+    }
+
+    /**
+     * @covers Fedora::Autoloader::Autoload::addPsr0
+     **/
+    public function testAddPsr0Simple()
+    {
+        $this->assertFalse(class_exists('Foo'));
+        $this->assertFalse(class_exists('Foo_Bar'));
+        $this->assertFalse(class_exists('One\\Two\\Foo'));
+        $this->assertFalse(class_exists('One_Two\\Foo'));
+
+        Autoload::addPsr0('', __DIR__.'/fixtures/PSR0');
+
+        $this->assertTrue(class_exists('Foo'));
+        $this->assertTrue(class_exists('Foo_Bar'));
+        $this->assertTrue(class_exists('One\\Two\\Foo'));
+        $this->assertTrue(class_exists('One_Two\\Foo'));
+    }
 }

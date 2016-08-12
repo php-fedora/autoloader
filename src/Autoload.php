@@ -27,6 +27,11 @@ class Autoload
     protected static $psr4 = array();
 
     /**
+     * @var array PSR-0 mapping stack. See addPsr0() for description of elements.
+     */
+    protected static $psr0 = array();
+
+    /**
      * Static functions only.
      */
     private function __construct()
@@ -63,6 +68,53 @@ class Autoload
 
         spl_autoload_register(array(__CLASS__, 'loadClass'), true, true);
         static::$registered = true;
+    }
+
+    /**
+     * Add PSR-0 mapping.
+     *
+     * If self not already registered (determined by {@link isRegistered()}),
+     * registers by calling {@link register()}.
+     *
+     * Elements added to {@link $psr0} are:
+     * ```php
+     * array($prefix, $path)
+     * ```
+     *
+     * @param string $prefix  Class or Namespace prefix (no `\` added).
+     * @param string $path    Base path/directory (automatically suffixed with `DIRECTORY_SEPARATOR`).
+     * @param bool   $prepend Whether or not to prepend to PSR-0 mapping stack.
+     *
+     * @see http://www.php-fig.org/psr/psr-0/
+     */
+    public static function addPsr0($prefix, $path, $prepend = false)
+    {
+        // If not registered, register.
+        if (!static::isRegistered()) {
+            static::register();
+        }
+
+        $path = rtrim($path, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+
+        if ($prepend) {
+            array_unshift(static::$psr0, array($prefix, $path));
+        } else {
+            static::$psr0[] = array($prefix, $path);
+        }
+    }
+
+    /**
+     * Add every dir in the include_path as a PSR-0 tree.
+     */
+    public static function addIncludePath()
+    {
+        $paths = explode(PATH_SEPARATOR, get_include_path());
+        foreach ($paths as $path) {
+            if ($path == '.') {
+                continue;
+            }
+            self::addPsr0('', $path);
+        }
     }
 
     /**
@@ -190,12 +242,17 @@ class Autoload
      */
     public static function findFile($class)
     {
+        $class = ltrim($class, '\\');
         $lower = strtolower($class);
+
+        // Classmap
         foreach (static::$classMap as $dir => $classmap) {
             if (isset($classmap[$lower]) && file_exists($dir.$classmap[$lower])) {
                 return $dir.$classmap[$lower];
             }
         }
+
+        // PSR-4
         foreach (static::$psr4 as list($prefix, $path)) {
             if (0 === strpos($class, $prefix)) {
                 $classWithoutPrefix = substr($class, strlen($prefix));
@@ -203,6 +260,26 @@ class Autoload
 
                 if (file_exists($file)) {
                     return $file;
+                }
+            }
+        }
+
+        // PSR-0
+        if (count(static::$psr0)) {
+            $pos = strrpos($class, '\\');
+            $file = '';
+            if ($pos) {
+                $namespace = substr($class, 0, $pos);
+                $class = substr($class, $pos + 1);
+                $file = str_replace('\\', DIRECTORY_SEPARATOR, $namespace).DIRECTORY_SEPARATOR;
+            }
+            $file .= str_replace('_', DIRECTORY_SEPARATOR, $class).'.php';
+
+            foreach (static::$psr0 as list($prefix, $path)) {
+                if (empty($prefix) || 0 === strpos($class, $prefix)) {
+                    if (file_exists($path.$file)) {
+                        return $path.$file;
+                    }
                 }
             }
         }
