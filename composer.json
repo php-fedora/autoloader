@@ -45,7 +45,7 @@
         ],
         "cs-src": "php-cs-fixer fix src || [ $? = 1 ]",
         "cs-tests": "php-cs-fixer fix tests || [ $? = 1 ]",
-        "tests": "phpunit",
+        "test": "phpunit",
         "phpdoc": "phpdoc -d src -i src/autoload.php -t phpdoc"
     }
 }
