@@ -104,6 +104,16 @@ class Autoload
     }
 
     /**
+     * Returns protected PSR-0 mappings.
+     *
+     * @return array
+     */
+    public static function getPsr0()
+    {
+        return static::$psr0;
+    }
+
+    /**
      * Add every dir in the include_path as a PSR-0 tree.
      */
     public static function addIncludePath()
