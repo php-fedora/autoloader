@@ -25,7 +25,8 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "*",
         "phpunit/phpunit": "*",
-        "phpdocumentor/phpdocumentor": "*"
+        "phpdocumentor/phpdocumentor": "*",
+        "theseer/autoload": "^1.21"
     },
     "autoload": {
         "psr-4": {
