@@ -6,7 +6,7 @@ if (!class_exists('Fedora\\Autoloader\\Autoload')) {
 
 \Fedora\Autoloader\Autoload::addClassMap(
     array(
-        'foo\\bar' => '/Bar.php',
+        'foo\\bar' => '/Bar.php'
     ),
     __DIR__
 );
