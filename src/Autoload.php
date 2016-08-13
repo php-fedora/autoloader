@@ -304,19 +304,3 @@ class Autoload
         }
     }
 }
-
-/**
- *
- */
-function requireFile($file)
-{
-    require_once $file;
-}
-
-/**
- *
- */
-function includeFile($file)
-{
-    include_once $file;
-}
