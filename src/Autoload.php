@@ -203,37 +203,6 @@ class Autoload
     }
 
     /**
-     * Requires other autoloader dependency files.
-     *
-     * Loops through all $dependencies.  If a dependency is required,
-     * it is always loaded.  If a dependency  is not required, it is
-     * only loaded if the dependency autoloader file exists.
-     *
-     * Example:
-     *
-     * ```php
-     * \Fedora\Autoloader::dependencies(array(
-     *     // Required dependency so always load.
-     *     '/usr/share/php/Foo/autoload.php' => true,
-     *     // Optional dependency so only load if it exists.
-     *     '/usr/share/php/Bar/autoload.php' => false,
-     * ));
-     * ```
-     *
-     * @param array $dependencies Autoloader dependency files.
-     *                            Keys: Dependency autoloader files.
-     *                            Values: Whether dependcy autoloader file is required or not.
-     */
-    public static function dependencies(array $dependencies)
-    {
-        foreach ($dependencies as $dependency => $required) {
-            if ($required || file_exists($dependency)) {
-                requireFile($dependency);
-            }
-        }
-    }
-
-    /**
      * Loads a class' file.
      *
      * This is the self function registered as an autoload handler.
