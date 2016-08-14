@@ -30,9 +30,9 @@
         "theseer/autoload": "^1.21"
     },
     "autoload": {
-        "psr-4": {
-            "Fedora\\Autoloader\\": "src"
-        }
+        "files": [
+            "src/autoload.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -40,7 +40,7 @@
         }
     },
     "scripts": {
-        "cs": "php-cs-fixer fix || :",
+        "cs": "php-cs-fixer fix",
         "phpdoc": "phpdoc -d src -i src/autoload.php -t phpdoc",
         "test": "phpunit"
     }

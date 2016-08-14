@@ -10,7 +10,14 @@
 namespace Fedora\Autoloader;
 
 /**
+ * Scope isolated require.
  *
+ * Prevents access to a class' $this/self from required files.
+ *
+ * Originally taken from
+ * {@link https://github.com/composer/composer/blob/master/src/Composer/Autoload/ClassLoader.php Composer/Autoload/ClassLoader::includeFile()}.
+ *
+ * @param string $file File to `require_once`.
  */
 function requireFile($file)
 {
@@ -18,7 +25,14 @@ function requireFile($file)
 }
 
 /**
+ * Scope isolated include.
  *
+ * Prevents access to a class' $this/self from included files.
+ *
+ * Originally taken from
+ * {@link https://github.com/composer/composer/blob/master/src/Composer/Autoload/ClassLoader.php Composer/Autoload/ClassLoader::includeFile()}.
+ *
+ * @param string $file File to `include_once`.
  */
 function includeFile($file)
 {
