@@ -27,7 +27,7 @@
         "friendsofphp/php-cs-fixer": "*",
         "phpdocumentor/phpdocumentor": "*",
         "phpunit/phpunit": "*",
-        "theseer/autoload": "^1.21"
+        "theseer/autoload": "^1.22"
     },
     "autoload": {
         "files": [
