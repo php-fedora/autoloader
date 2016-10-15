@@ -1,7 +1,7 @@
 <?php
 
-if (!class_exists('Fedora\\Autoloader\\Autoload')) {
-    require_once ___PATH___.'/autoload.php';
+if (!class_exists('Fedora\\Autoloader\\Autoload', false)) {
+    require_once '__PHPDIR__/autoload.php';
 }
 
 \Fedora\Autoloader\Autoload::addClassMap(
