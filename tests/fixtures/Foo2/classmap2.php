@@ -1,6 +1,6 @@
 <?php
 
-if (!class_exists('Fedora\\Autoloader\\Autoload')) {
+if (!class_exists('Fedora\\Autoloader\\Autoload', false)) {
     require_once __DIR__.'/../../../src'.'/autoload.php';
 }
 
