@@ -1,146 +1,127 @@
-# Fedora Autoloaders
+# Fedora Autoloader
 
 [![Build Status](https://travis-ci.org/php-fedora/autoloader.svg?branch=master)](https://travis-ci.org/php-fedora/autoloader)
 
-Standardized, simplified, and singleton autoloaders
+Static [PSR-4](http://www.php-fig.org/psr/psr-4/), [PSR-0](http://www.php-fig.org/psr/psr-0/),
+and classmap autoloader.  Includes loader for required and optional dependencies.
 
-## Autoloaders
+## Autoloader
 
-### Symfony
+### PSR-4
 
-#### Before
+`\Fedora\Autoloader\Autoload::addPsr4($prefix, $path, $prepend = false)`
 
-```
-BuildRequires: php-composer(symfony/class-loader)
-Requires:      php-composer(symfony/class-loader)
+### PSR-0
 
-cat <<'AUTOLOAD' | tee src/autoload.php
-<?php
+`\Fedora\Autoloader\Autoload::addPsr0($prefix, $path, $prepend = false)`
 
-if (!isset($fedoraClassLoader) || !($fedoraClassLoader instanceof \Symfony\Component\ClassLoader\ClassLoader)) {
-    if (!class_exists('Symfony\\Component\\ClassLoader\\ClassLoader', false)) {
-        require_once '%{_datadir}/php/Symfony/Component/ClassLoader/ClassLoader.php';
-    }
+### Classmap
 
-    $fedoraClassLoader = new \Symfony\Component\ClassLoader\ClassLoader();
-    $fedoraClassLoader->register();
-}
+`\Fedora\Autoloader\Autoload::addClassMap(array $classMap, $path)`
 
-// This library
-$fedoraClassLoader->addPrefix('Foo\\Bar\\', dirname(dirname(__DIR__)));
+## Dependencies loader
 
-// Required dependency
-require_once '%{_datadir}/php/Foo/BazRequired/autoload.php';
+Loops through provided array of dependencies:
+- If dependency is not an array:
+    - If dependency is required, it is always required/loaded.
+    - If dependency is not required, it is only required/loaded if it exists.
+- If dependency is an array:
+    - Loops through all items until the first item that exists is found and
+        then it is required/loaded.  If no item is found and the dependency
+        is required, the last item will be required/loaded (causing an error).
 
-// Optional dependency
-if (file_exists('%{_datadir}/php/Foo/BazOptional/autoload.php')) {
-    require_once '%{_datadir}/php/Foo/BazOptional/autoload.php';
-}
-AUTOLOAD
-```
+### Required dependencies
 
-#### After
+`\Fedora\Autoloader\Dependencies::required(array $requiredDependencies)`
 
-```
-BuildRequires: php-composer(fedora/autoloader)
-Requires:      php-composer(fedora/autoloader)
-
-cat <<'AUTOLOAD' | tee src/autoload.php
-<?php
-
-// This library
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-\Fedora\Autoloader\Autoload::addPsr4('Foo\\Bar\\', __DIR__);
-
-// Dependencies
-\Fedora\Autoloader\Autoload::dependencies(array(
-    '%{_datadir}/php/Foo/BazRequired/autoload.php' => true,
-    '%{_datadir}/php/Foo/BazOptional/autoload.php' => false,
-));
-AUTOLOAD
-```
-
-### Zend
-
-#### Before
-
-```
-BuildRequires: php-composer(zendframework/zend-loader)
-Requires:      php-composer(zendframework/zend-loader)
-
-cat <<'AUTOLOAD' | tee src/autoload.php
-<?php
-
-require_once '%{_datadir}/php/Zend/Loader/AutoloaderFactory.php';
-Zend\Loader\AutoloaderFactory::factory(array(
-    'Zend\Loader\StandardAutoloader' => array(
-        'fallback_autoloader' => true, // for other dep, if needed
-        'autoregister_zf' => true,     // for ZF, if needed
-        'namespaces' => array(
-           'Foo\\Bar\\' => __DIR__     // Your namespace
-        )
-    )
-));
-
-// Required dependency
-require_once '%{_datadir}/php/Foo/BazRequired/autoload.php';
-
-// Optional dependency
-if (file_exists('%{_datadir}/php/Foo/BazOptional/autoload.php')) {
-    require_once '%{_datadir}/php/Foo/BazOptional/autoload.php';
-}
-AUTOLOAD
-```
-
-#### After
-
-```
-BuildRequires: php-composer(fedora/autoloader)
-Requires:      php-composer(fedora/autoloader)
-
-cat <<'AUTOLOAD' | tee src/autoload.php
-<?php
-
-// This library
-require_once '%{_datadir}/php/Fedora/Autoloader/autoload.php';
-\Fedora\Autoloader\Autoload::addPsr4('Foo\\Bar\\', __DIR__);
-
-// Dependencies
-\Fedora\Autoloader\Autoload::dependencies(array(
-    '%{_datadir}/php/Foo/BazRequired/autoload.php' => true,
-    '%{_datadir}/php/Foo/BazOptional/autoload.php' => false,
-));
-AUTOLOAD
-```
-
-## Dependencies
-
-### Before
+#### Example 1
 
 ```php
-// Required dependencies
-require_once '%{_datadir}/php/Foo1/autoload.php';
-require_once '%{_datadir}/php/Foo2/autoload.php';
+\Fedora\Autoloader\Dependencies::required(array(
+    '/usr/share/php/RequiredFoo/autoload.php',
+    '/usr/share/php/RequiredBar/autoload.php',
+));
+```
 
-// Optional dependencies
-foreach (array(
-    '%{_datadir}/php/Baz1/autoload.php',
-    '%{_datadir}/php/Baz2/autoload.php',
-) as $optionalDependency) {
-    if (file_exists($optionalDependency)) {
-        require_once $optionalDependency;
-    }
+Equates to:
+
+```php
+require_once '/usr/share/php/RequiredFoo/autoload.php';
+require_once '/usr/share/php/RequiredBar/autoload.php';
+```
+
+#### Example 2
+
+```php
+\Fedora\Autoloader\Dependencies::required(array(
+    array(
+      '/usr/share/php/RequiredFooVersion1/autoload.php',
+      '/usr/share/php/RequiredFooVersion2/autoload.php',
+      '/usr/share/php/RequiredFooVersion3/autoload.php',
+    ),
+));
+```
+
+Equates to:
+
+```php
+if (file_exists('/usr/share/php/RequiredFooVersion1/autoload.php')) {
+    require_once '/usr/share/php/RequiredFooVersion1/autoload.php';
+} elseif (file_exists('/usr/share/php/RequiredFooVersion2/autoload.php')) {
+    require_once '/usr/share/php/RequiredFooVersion2/autoload.php';
+} else {
+    require_once '/usr/share/php/RequiredFooVersion3/autoload.php';
 }
 ```
 
-### After
+### Optional dependencies
+
+`\Fedora\Autoloader\Dependencies::optional(array $optionalDependencies)`
+
+#### Example 1
 
 ```php
-// Dependencies
-\Fedora\Autoloader\Autoload::dependencies(array(
-    '%{_datadir}/php/Foo1/autoload.php' => true,
-    '%{_datadir}/php/Foo2/autoload.php' => true,
-    '%{_datadir}/php/Baz1/autoload.php' => false,
-    '%{_datadir}/php/Baz2/autoload.php' => false,
+\Fedora\Autoloader\Dependencies::optional(array(
+    '/usr/share/php/OptionalFoo/autoload.php',
+    '/usr/share/php/OptionalBar/autoload.php',
 ));
 ```
+
+Equates to:
+
+```php
+if (file_exists('/usr/share/php/OptionalFoo/autoload.php')) {
+    require_once '/usr/share/php/OptionalFoo/autoload.php';
+}
+
+if (file_exists('/usr/share/php/OptionalBar/autoload.php')) {
+    require_once '/usr/share/php/OptionalBar/autoload.php';
+}
+```
+
+#### Example 2
+
+```php
+\Fedora\Autoloader\Dependencies::optional(array(
+    array(
+      '/usr/share/php/OptionalFooVersion1/autoload.php',
+      '/usr/share/php/OptionalFooVersion2/autoload.php',
+      '/usr/share/php/OptionalFooVersion3/autoload.php',
+    ),
+));
+```
+
+Equates to:
+```php
+if (file_exists('/usr/share/php/OptionalFooVersion1/autoload.php')) {
+    require_once '/usr/share/php/OptionalFooVersion1/autoload.php';
+} elseif (file_exists('/usr/share/php/OptionalFooVersion2/autoload.php')) {
+    require_once '/usr/share/php/OptionalFooVersion2/autoload.php';
+} elseif (file_exists('/usr/share/php/OptionalFooVersion3/autoload.php')) {
+    require_once '/usr/share/php/OptionalFooVersion3/autoload.php';
+}
+```
+
+## License
+
+[The MIT License (MIT)](LICENSE)
