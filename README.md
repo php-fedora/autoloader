@@ -19,6 +19,12 @@ and classmap autoloader.  Includes loader for required and optional dependencies
 
 `\Fedora\Autoloader\Autoload::addClassMap(array $classMap, $path)`
 
+#### `phpab` Template
+
+Template: [res/phpab/fedora.php.tpl](res/phpab/fedora.php.tpl)
+
+For an example of its' usage, see [tests/genclassmap.sh](tests/genclassmap.sh).
+
 ## Dependencies loader
 
 Loops through provided array of dependencies:
@@ -55,9 +61,9 @@ require_once '/usr/share/php/RequiredBar/autoload.php';
 ```php
 \Fedora\Autoloader\Dependencies::required(array(
     array(
-      '/usr/share/php/RequiredFooVersion1/autoload.php',
-      '/usr/share/php/RequiredFooVersion2/autoload.php',
-      '/usr/share/php/RequiredFooVersion3/autoload.php',
+        '/usr/share/php/RequiredFooVersion1/autoload.php',
+        '/usr/share/php/RequiredFooVersion2/autoload.php',
+        '/usr/share/php/RequiredFooVersion3/autoload.php',
     ),
 ));
 ```
@@ -104,9 +110,9 @@ if (file_exists('/usr/share/php/OptionalBar/autoload.php')) {
 ```php
 \Fedora\Autoloader\Dependencies::optional(array(
     array(
-      '/usr/share/php/OptionalFooVersion1/autoload.php',
-      '/usr/share/php/OptionalFooVersion2/autoload.php',
-      '/usr/share/php/OptionalFooVersion3/autoload.php',
+        '/usr/share/php/OptionalFooVersion1/autoload.php',
+        '/usr/share/php/OptionalFooVersion2/autoload.php',
+        '/usr/share/php/OptionalFooVersion3/autoload.php',
     ),
 ));
 ```
