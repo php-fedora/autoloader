@@ -14,6 +14,7 @@ use Fedora\Autoloader\Autoload;
 class AutoloadTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @group psr4
      * @covers Fedora::Autoloader::Autoload::addPsr4
      **/
     public function testAddPsr4()
@@ -24,6 +25,7 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group psr4
      * @covers Fedora::Autoloader::Autoload::addPsr4
      **/
     public function testAddPsr4Order()
@@ -37,6 +39,7 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group classmap
      * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
     public function testAddClassMap()
@@ -52,6 +55,7 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group classmap
      * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
     public function testAddClassMapTemplate()
@@ -62,6 +66,7 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group classmap
      * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
     public function testAddClassMapLowerCase()
@@ -72,6 +77,7 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group classmap
      * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
     public function testAddClassMapTemplateOrder()
@@ -85,6 +91,7 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group classmap
      * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
     public function testAddClassMapTemplateOrderBis()
@@ -104,6 +111,7 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group psr0
      * @covers Fedora::Autoloader::Autoload::addIncludePath
      **/
     public function testAddIncludePath()
@@ -129,6 +137,7 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @group psr0
      * @covers Fedora::Autoloader::Autoload::addPsr0
      **/
     public function testAddPsr0Simple()
@@ -144,5 +153,31 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(class_exists('Foo_Bar'));
         $this->assertTrue(class_exists('One\\Two\\Foo'));
         $this->assertTrue(class_exists('One_Two\\Foo'));
+    }
+
+    /**
+     * @group psr0
+     * @covers Fedora::Autoloader::Autoload::addPsr0
+     **/
+    public function testAddPsr0ns1()
+    {
+        $this->assertFalse(class_exists('One\\Two\\Foo'));
+
+        Autoload::addPsr0('One\\', __DIR__.'/fixtures/PSR0');
+
+        $this->assertTrue(class_exists('One\\Two\\Foo'));
+    }
+
+    /**
+     * @group psr0
+     * @covers Fedora::Autoloader::Autoload::addPsr0
+     **/
+    public function testAddPsr0ns2()
+    {
+        $this->assertFalse(class_exists('One\\Two\\Foo'));
+
+        Autoload::addPsr0('One\\Two\\', __DIR__.'/fixtures/PSR0');
+
+        $this->assertTrue(class_exists('One\\Two\\Foo'));
     }
 }
