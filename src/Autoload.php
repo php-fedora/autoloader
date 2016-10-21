@@ -251,11 +251,11 @@ class Autoload
         // PSR-0
         if (count(static::$psr0)) {
             $pos = strrpos($class, '\\');
-            $file = '';
+            $file = $namespace = '';
             if ($pos) {
-                $namespace = substr($class, 0, $pos);
+                $namespace = substr($class, 0, $pos + 1);
                 $class = substr($class, $pos + 1);
-                $file = str_replace('\\', DIRECTORY_SEPARATOR, $namespace).DIRECTORY_SEPARATOR;
+                $file = str_replace('\\', DIRECTORY_SEPARATOR, $namespace);
             }
             $file .= str_replace('_', DIRECTORY_SEPARATOR, $class).'.php';
 
@@ -263,8 +263,7 @@ class Autoload
             //       for PHP < 5.5 compatibility.
             foreach (static::$psr0 as $psr0) {
                 list($prefix, $path) = $psr0;
-
-                if (empty($prefix) || 0 === strpos($class, $prefix)) {
+                if (empty($prefix) || 0 === strpos($namespace.$class, $prefix)) {
                     if (file_exists($path.$file)) {
                         return $path.$file;
                     }
