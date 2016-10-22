@@ -89,6 +89,7 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
      **/
     public function testAddClassMapTemplateOrderBis()
     {
+        $nb = count(Autoload::getClassMap());
         $this->assertFalse(class_exists('Foo\\Bar'));
         require __DIR__.'/fixtures/Foo2/classmap2.php';
         require __DIR__.'/fixtures/Foo/classmap.php';
@@ -98,7 +99,7 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('three', \Foo\Bar::order);
 
         $classmap = Autoload::getClassMap();
-        $this->assertEquals(2, count($classmap));
+        $this->assertEquals($nb+2, count($classmap));
         $this->assertArrayHasKey(__DIR__.'/fixtures/Foo', $classmap);
         $this->assertArrayHasKey(__DIR__.'/fixtures/Foo2', $classmap);
     }
