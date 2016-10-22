@@ -15,7 +15,6 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @group psr4
-     * @covers Fedora::Autoloader::Autoload::addPsr4
      **/
     public function testAddPsr4()
     {
@@ -26,7 +25,6 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group psr4
-     * @covers Fedora::Autoloader::Autoload::addPsr4
      **/
     public function testAddPsr4Order()
     {
@@ -40,7 +38,6 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group classmap
-     * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
     public function testAddClassMap()
     {
@@ -56,7 +53,6 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group classmap
-     * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
     public function testAddClassMapTemplate()
     {
@@ -67,7 +63,6 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group classmap
-     * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
     public function testAddClassMapLowerCase()
     {
@@ -78,7 +73,6 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group classmap
-     * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
     public function testAddClassMapTemplateOrder()
     {
@@ -92,7 +86,6 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group classmap
-     * @covers Fedora::Autoloader::Autoload::addClassMap
      **/
     public function testAddClassMapTemplateOrderBis()
     {
@@ -112,7 +105,6 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group psr0
-     * @covers Fedora::Autoloader::Autoload::addIncludePath
      **/
     public function testAddIncludePath()
     {
@@ -138,7 +130,6 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group psr0
-     * @covers Fedora::Autoloader::Autoload::addPsr0
      **/
     public function testAddPsr0Simple()
     {
@@ -157,7 +148,6 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group psr0
-     * @covers Fedora::Autoloader::Autoload::addPsr0
      **/
     public function testAddPsr0ns1()
     {
@@ -170,7 +160,6 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @group psr0
-     * @covers Fedora::Autoloader::Autoload::addPsr0
      **/
     public function testAddPsr0ns2()
     {
