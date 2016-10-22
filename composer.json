@@ -42,6 +42,7 @@
     "scripts": {
         "cs": "php-cs-fixer fix",
         "phpdoc": "phpdoc -d src -i src/autoload.php -t phpdoc",
+        "phpcov": "phpunit --coverage-html phpcov",
         "test": "phpunit"
     }
 }
