@@ -99,7 +99,7 @@ class AutoloadTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('three', \Foo\Bar::order);
 
         $classmap = Autoload::getClassMap();
-        $this->assertEquals($nb+2, count($classmap));
+        $this->assertEquals($nb + 2, count($classmap));
         $this->assertArrayHasKey(__DIR__.'/fixtures/Foo', $classmap);
         $this->assertArrayHasKey(__DIR__.'/fixtures/Foo2', $classmap);
     }
