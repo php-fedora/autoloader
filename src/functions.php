@@ -21,7 +21,7 @@ namespace Fedora\Autoloader;
  */
 function requireFile($file)
 {
-    if (file_exists($file)) {
+    if (is_file($file) && is_readable($file)) {
         require_once $file;
     } else {
         throw new \RuntimeException("File not found '$file'");
