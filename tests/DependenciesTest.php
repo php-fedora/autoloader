@@ -27,10 +27,26 @@ class DependenciesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(class_exists('Foo\\Bar\\Baz'));
     }
 
+    /**
+     * @expectedException RuntimeException
+     * @expectedExceptionMessageRegex /File Not Found.*AlsoNotExist/
+     **/
+    public function testRequiredNotExistsLast()
+    {
+        Dependencies::required(array(
+            array(
+                __DIR__.'/fixtures/DoesNotExist.php',
+                __DIR__.'/fixtures/AlsoNotExist.php',
+        ), ));
+    }
+
+    /**
+     * @expectedException RuntimeException
+     * @expectedExceptionMessageRegex /File Not Found.*DoesNotExist/
+     **/
     public function testRequiredNotExists()
     {
-        $this->markTestSkipped('Skipping until we can get this test to pass');
-        //Dependencies::required(array(__DIR__.'/fixtures/DoesNotExist.php'));
+        Dependencies::required(array(__DIR__.'/fixtures/DoesNotExist.php'));
     }
 
     public function testRequiredFirstExists()

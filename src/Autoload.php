@@ -209,7 +209,7 @@ class Autoload
      */
     public static function loadClass($class)
     {
-        if ($file = static::findFile($class)) {
+        if ($file = static::findFileForClass($class)) {
             includeFile($file);
         }
     }
@@ -219,7 +219,7 @@ class Autoload
      *
      * Checks for a classmap and then loops through PSR-4 mappings.
      */
-    public static function findFile($class)
+    public static function findFileForClass($class)
     {
         $class = ltrim($class, '\\');
         $lower = strtolower($class);
