@@ -94,29 +94,39 @@ class Dependencies
      *
      * @param array $dependencies Dependencies
      * @param bool  $required     Whether dependencies are required or not.
+     *
+     * @throws \RuntimeException If required and no file is successfully loaded
+     *     via {@link requireFile()}.
      */
     protected static function process(array $dependencies, $required)
     {
         foreach ($dependencies as $dependency) {
             if (is_array($dependency)) {
-                $dependencyToLoad = null;
+                $dependencyLoaded = false;
 
                 foreach ($dependency as $firstExistsDependency) {
-                    if (file_exists($firstExistsDependency)) {
-                        $dependencyToLoad = $firstExistsDependency;
+                    try {
+                        requireFile($firstExistsDependency);
+                        $dependencyLoaded = true;
                         break;
+                    } catch (\RuntimeException $e) {
                     }
                 }
 
-                if ($required || isset($dependencyToLoad)) {
-                    if (!isset($dependencyToLoad)) {
-                        $dependencyToLoad = end($dependency);
-                    }
-
-                    requireFile($dependencyToLoad);
+                if ($required && !$dependencyLoaded) {
+                    throw new \RuntimeException(sprintf(
+                      "Files not found: '%s'",
+                      implode("' || '", $dependency)
+                    ));
                 }
-            } elseif ($required || file_exists($dependency)) {
-                requireFile($dependency);
+            } else {
+                try {
+                    requireFile($dependency);
+                } catch (\RuntimeException $e) {
+                    if ($required) {
+                        throw $e;
+                    }
+                }
             }
         }
     }

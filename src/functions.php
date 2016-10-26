@@ -18,13 +18,15 @@ namespace Fedora\Autoloader;
  * {@link https://github.com/composer/composer/blob/master/src/Composer/Autoload/ClassLoader.php Composer/Autoload/ClassLoader::includeFile()}.
  *
  * @param string $file File to `require_once`.
+ *
+ * @throws \RuntimeException If file does not exist or is not readable.
  */
 function requireFile($file)
 {
     if (is_file($file) && is_readable($file)) {
         require_once $file;
     } else {
-        throw new \RuntimeException("File not found '$file'");
+        throw new \RuntimeException("File not found: '$file'");
     }
 }
 

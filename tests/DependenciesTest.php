@@ -29,7 +29,7 @@ class DependenciesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException RuntimeException
-     * @expectedExceptionMessageRegex /File Not Found.*AlsoNotExist/
+     * @expectedExceptionMessageRegex /Files not found.*DoesNotExist.*AlsoNotExist/
      **/
     public function testRequiredNotExistsLast()
     {
@@ -37,16 +37,19 @@ class DependenciesTest extends \PHPUnit_Framework_TestCase
             array(
                 __DIR__.'/fixtures/DoesNotExist.php',
                 __DIR__.'/fixtures/AlsoNotExist.php',
-        ), ));
+            ),
+        ));
     }
 
     /**
      * @expectedException RuntimeException
-     * @expectedExceptionMessageRegex /File Not Found.*DoesNotExist/
+     * @expectedExceptionMessageRegex /File not found.*DoesNotExist/
      **/
     public function testRequiredNotExists()
     {
-        Dependencies::required(array(__DIR__.'/fixtures/DoesNotExist.php'));
+        Dependencies::required(array(
+            __DIR__.'/fixtures/DoesNotExist.php',
+        ));
     }
 
     public function testRequiredFirstExists()
