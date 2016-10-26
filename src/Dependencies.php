@@ -102,25 +102,31 @@ class Dependencies
     {
         foreach ($dependencies as $dependency) {
             if (is_array($dependency)) {
-                $loadedDependency = null;
+                $dependencyLoaded = false;
 
                 foreach ($dependency as $firstExistsDependency) {
                     try {
                         requireFile($firstExistsDependency);
-                        $loadedDependency = $firstExistsDependency;
+                        $dependencyLoaded = true;
                         break;
                     } catch (\RuntimeException $e) {
                     }
                 }
 
-                if ($required && empty($loadedDependency)) {
+                if ($required && !$dependencyLoaded) {
                     throw new \RuntimeException(sprintf(
-                      'Files not found: "%s"',
-                      implode('" || "', $dependency)
+                      "Files not found: '%s'",
+                      implode("' || '", $dependency)
                     ));
                 }
-            } elseif ($required || file_exists($dependency)) {
-                requireFile($dependency);
+            } else {
+                try {
+                    requireFile($dependency);
+                } catch (\RuntimeException $e) {
+                    if ($required) {
+                        throw $e;
+                    }
+                }
             }
         }
     }
