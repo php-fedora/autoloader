@@ -29,12 +29,14 @@ For an example of its' usage, see [tests/genclassmap.sh](tests/genclassmap.sh).
 
 Loops through provided array of dependencies:
 - If dependency is not an array:
-    - If dependency is required, it is always required/loaded.
+    - If dependency is required, it is only required/loaded if it exists,
+      otherwise a `\RuntimeException` is thrown.
     - If dependency is not required, it is only required/loaded if it exists.
 - If dependency is an array:
     - Loops through all items until the first item that exists is found and
-        then it is required/loaded.  If no item is found and the dependency
-        is required, the last item will be required/loaded (causing an error).
+      then it is required/loaded.  If no item is found and the dependency
+      is required, the last item will be required/loaded if it exists,
+      otherwise a `\RuntimeException` is thrown.
 
 ### Required dependencies
 
@@ -52,8 +54,23 @@ Loops through provided array of dependencies:
 Equates to:
 
 ```php
-require_once '/usr/share/php/RequiredFoo/autoload.php';
-require_once '/usr/share/php/RequiredBar/autoload.php';
+if (
+    is_file('/usr/share/php/RequiredFoo/autoload.php')
+    && is_readable('/usr/share/php/RequiredFoo/autoload.php')
+) {
+    require_once '/usr/share/php/RequiredFoo/autoload.php';
+} else {
+    throw new \RuntimeException("File not found: '/usr/share/php/RequiredFoo/autoload.php'");
+}
+
+if (
+    is_file('/usr/share/php/RequiredBar/autoload.php')
+    && is_readable('/usr/share/php/RequiredBar/autoload.php')
+) {
+    require_once '/usr/share/php/RequiredBar/autoload.php';
+} else {
+    throw new \RuntimeException("File not found: '/usr/share/php/RequiredBar/autoload.php'");
+}
 ```
 
 #### Example 2
@@ -71,12 +88,27 @@ require_once '/usr/share/php/RequiredBar/autoload.php';
 Equates to:
 
 ```php
-if (file_exists('/usr/share/php/RequiredFooVersion1/autoload.php')) {
+if (
+    is_file('/usr/share/php/RequiredFooVersion1/autoload.php')
+    && is_readable('/usr/share/php/RequiredFooVersion1/autoload.php')
+) {
     require_once '/usr/share/php/RequiredFooVersion1/autoload.php';
-} elseif (file_exists('/usr/share/php/RequiredFooVersion2/autoload.php')) {
+} elseif (
+    is_file('/usr/share/php/RequiredFooVersion2/autoload.php')
+    && is_readable('/usr/share/php/RequiredFooVersion2/autoload.php')
+) {
     require_once '/usr/share/php/RequiredFooVersion2/autoload.php';
-} else {
+} elseif (
+    is_file('/usr/share/php/RequiredFooVersion3/autoload.php')
+    && is_readable('/usr/share/php/RequiredFooVersion3/autoload.php')
+) {
     require_once '/usr/share/php/RequiredFooVersion3/autoload.php';
+} else {
+    throw new \RuntimeException("Files not found: "
+        . "'/usr/share/php/RequiredFooVersion1/autoload.php'"
+        . "|| '/usr/share/php/RequiredFooVersion2/autoload.php'"
+        . "|| '/usr/share/php/RequiredFooVersion3/autoload.php'"
+    );
 }
 ```
 
@@ -96,11 +128,17 @@ if (file_exists('/usr/share/php/RequiredFooVersion1/autoload.php')) {
 Equates to:
 
 ```php
-if (file_exists('/usr/share/php/OptionalFoo/autoload.php')) {
+if (
+    is_file('/usr/share/php/OptionalFoo/autoload.php')
+    && is_readable('/usr/share/php/OptionalFoo/autoload.php')
+) {
     require_once '/usr/share/php/OptionalFoo/autoload.php';
 }
 
-if (file_exists('/usr/share/php/OptionalBar/autoload.php')) {
+if (
+    is_file('/usr/share/php/OptionalBar/autoload.php')
+    && is_readable('/usr/share/php/OptionalBar/autoload.php')
+) {
     require_once '/usr/share/php/OptionalBar/autoload.php';
 }
 ```
@@ -119,11 +157,20 @@ if (file_exists('/usr/share/php/OptionalBar/autoload.php')) {
 
 Equates to:
 ```php
-if (file_exists('/usr/share/php/OptionalFooVersion1/autoload.php')) {
+if (
+    is_file('/usr/share/php/OptionalFooVersion1/autoload.php')
+    && is_readable('/usr/share/php/OptionalFooVersion1/autoload.php')
+) {
     require_once '/usr/share/php/OptionalFooVersion1/autoload.php';
-} elseif (file_exists('/usr/share/php/OptionalFooVersion2/autoload.php')) {
+} elseif (
+    is_file('/usr/share/php/OptionalFooVersion2/autoload.php')
+    && is_readable('/usr/share/php/OptionalFooVersion2/autoload.php')
+) {
     require_once '/usr/share/php/OptionalFooVersion2/autoload.php';
-} elseif (file_exists('/usr/share/php/OptionalFooVersion3/autoload.php')) {
+} elseif (
+    is_file('/usr/share/php/OptionalFooVersion3/autoload.php')
+    && is_readable('/usr/share/php/OptionalFooVersion3/autoload.php')
+) {
     require_once '/usr/share/php/OptionalFooVersion3/autoload.php';
 }
 ```
