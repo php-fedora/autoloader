@@ -7,9 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-if (!class_exists('Fedora\\Autoloader\\Autoload', false)) {
-    require_once __DIR__.'/Autoload.php';
-    require_once __DIR__.'/functions.php';
-}
+if (!defined('FEDORA_AUTOLOADER')) {
+    if (!class_exists('Fedora\\Autoloader\\Autoload', false)) {
+        require_once __DIR__.'/Autoload.php';
+    }
 
-\Fedora\Autoloader\Autoload::addPsr4('Fedora\\Autoloader\\', __DIR__);
+    if (!function_exists('Fedora\\Autoloader\\requireFile')) {
+        require_once __DIR__.'/functions.php';
+    }
+
+    \Fedora\Autoloader\Autoload::addPsr4('Fedora\\Autoloader\\', __DIR__);
+
+    define('FEDORA_AUTOLOADER', true);
+}
