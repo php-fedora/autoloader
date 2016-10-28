@@ -15,4 +15,4 @@ if (!function_exists('Fedora\\Autoloader\\requireFile')) {
     require_once __DIR__.'/functions.php';
 }
 
-\Fedora\Autoloader\Autoload::addPsr4('Fedora\\Autoloader\\', __DIR__, true);
+\Fedora\Autoloader\Autoload::addPsr4('Fedora\\Autoloader\\', __DIR__);
