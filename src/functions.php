@@ -17,9 +17,9 @@ namespace Fedora\Autoloader;
  * Originally taken from
  * {@link https://github.com/composer/composer/blob/master/src/Composer/Autoload/ClassLoader.php Composer/Autoload/ClassLoader::includeFile()}.
  *
- * @param string $file File to `require_once`.
+ * @param string $file File to `require_once`
  *
- * @throws \RuntimeException If file does not exist or is not readable.
+ * @throws \RuntimeException If file does not exist or is not readable
  */
 function requireFile($file)
 {
@@ -38,7 +38,7 @@ function requireFile($file)
  * Originally taken from
  * {@link https://github.com/composer/composer/blob/master/src/Composer/Autoload/ClassLoader.php Composer/Autoload/ClassLoader::includeFile()}.
  *
- * @param string $file File to `include_once`.
+ * @param string $file File to `include_once`
  */
 function includeFile($file)
 {

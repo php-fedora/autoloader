@@ -12,22 +12,22 @@ namespace Fedora\Autoloader;
 class Autoload
 {
     /**
-     * @var bool Whether self is registered as an autoloader.
+     * @var bool Whether self is registered as an autoloader
      */
     protected static $registered = false;
 
     /**
-     * @var array Class map. See addClassMap() for description of elements.
+     * @var array Class map. See addClassMap() for description of elements
      */
     protected static $classMap = array();
 
     /**
-     * @var array PSR-4 mapping stack. See addPsr4() for description of elements.
+     * @var array PSR-4 mapping stack. See addPsr4() for description of elements
      */
     protected static $psr4 = array();
 
     /**
-     * @var array PSR-0 mapping stack. See addPsr0() for description of elements.
+     * @var array PSR-0 mapping stack. See addPsr0() for description of elements
      */
     protected static $psr0 = array();
 
@@ -81,9 +81,9 @@ class Autoload
      * array($prefix, $path)
      * ```
      *
-     * @param string $prefix  Class or Namespace prefix (no `\` added).
-     * @param string $path    Base path/directory (automatically suffixed with `DIRECTORY_SEPARATOR`).
-     * @param bool   $prepend Whether or not to prepend to PSR-0 mapping stack.
+     * @param string $prefix  Class or Namespace prefix (no `\` added)
+     * @param string $path    Base path/directory (automatically suffixed with `DIRECTORY_SEPARATOR`)
+     * @param bool   $prepend Whether or not to prepend to PSR-0 mapping stack
      *
      * @see http://www.php-fig.org/psr/psr-0/
      */
@@ -138,9 +138,9 @@ class Autoload
      * array($prefix, $path)
      * ```
      *
-     * @param string $prefix  Namespace prefix (automatically suffixed with `\`).
-     * @param string $path    Base path/directory (automatically suffixed with `DIRECTORY_SEPARATOR`).
-     * @param bool   $prepend Whether or not to prepend to PSR-4 mapping stack.
+     * @param string $prefix  Namespace prefix (automatically suffixed with `\`)
+     * @param string $path    Base path/directory (automatically suffixed with `DIRECTORY_SEPARATOR`)
+     * @param bool   $prepend Whether or not to prepend to PSR-4 mapping stack
      *
      * @see http://www.php-fig.org/psr/psr-4/
      */
@@ -175,9 +175,6 @@ class Autoload
         return static::$psr4;
     }
 
-    /**
-     *
-     */
     public static function addClassMap(array $classMap, $path)
     {
         // If not registered, register.
@@ -232,7 +229,7 @@ class Autoload
         }
 
         // PSR-4
-        //
+
         // NOTE: Cannot use `foreach (static::$psr4 as list($prefix, $path))`
         //       for PHP < 5.5 compatibility.
         foreach (static::$psr4 as $psr4) {
