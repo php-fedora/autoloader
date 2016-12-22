@@ -12,6 +12,7 @@ php:
 
 before_script:
     - composer self-update
+    - composer remove --dev friendsofphp/php-cs-fixer
     - composer install --no-interaction
 
 script: composer test
