@@ -69,6 +69,27 @@ class DependenciesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(class_exists('Foo\\Bar\\Baz'));
     }
 
+    public function testRequiredAlreadyLoaded()
+    {
+        $this->assertFalse(class_exists('Foo\\Bar'));
+        $this->assertFalse(class_exists('Foo\\Bar\\Baz'));
+
+        Dependencies::required(array(
+            __DIR__.'/fixtures/Foo/Bar/Baz.php',
+        ));
+
+        $this->assertTrue(class_exists('Foo\\Bar\\Baz'));
+
+        Dependencies::required(array(
+            array(
+                __DIR__.'/fixtures/Foo/Bar.php',
+                __DIR__.'/fixtures/Foo/Bar/Baz.php',
+            ),
+        ));
+
+        $this->assertFalse(class_exists('Foo\\Bar'));
+    }
+
     public function testOptionalExists()
     {
         $this->assertFalse(class_exists('Foo\\Bar'));

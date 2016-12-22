@@ -11,6 +11,9 @@ namespace Fedora\Autoloader;
 
 class Dependencies
 {
+    /* Already loaded dependencies */
+    public static $_loaded = array();
+
     /**
      * Static functions only.
      */
@@ -34,10 +37,10 @@ class Dependencies
      * See README for examples.
      *
      * @param array $dependencies Dependencies
-     * @param bool  $required     Whether dependencies are required or not.
+     * @param bool  $required     Whether dependencies are required or not
      *
      * @throws \RuntimeException If required and no file is successfully loaded
-     *     via {@link requireFile()}.
+     *                           via {@link requireFile()}
      */
     protected static function process(array $dependencies, $required)
     {
@@ -46,11 +49,21 @@ class Dependencies
                 $dependencyLoaded = false;
 
                 foreach ($dependency as $firstExistsDependency) {
-                    try {
-                        requireFile($firstExistsDependency);
+                    if (in_array($firstExistsDependency, self::$_loaded)) {
                         $dependencyLoaded = true;
                         break;
-                    } catch (\RuntimeException $e) {
+                    }
+                }
+
+                if (!$dependencyLoaded) {
+                    foreach ($dependency as $firstExistsDependency) {
+                        try {
+                            requireFile($firstExistsDependency);
+                            $dependencyLoaded = true;
+                            self::$_loaded[] = $firstExistsDependency;
+                            break;
+                        } catch (\RuntimeException $e) {
+                        }
                     }
                 }
 
@@ -63,6 +76,7 @@ class Dependencies
             } else {
                 try {
                     requireFile($dependency);
+                    self::$_loaded[] = $dependency;
                 } catch (\RuntimeException $e) {
                     if ($required) {
                         throw $e;
@@ -77,7 +91,7 @@ class Dependencies
      *
      * Calls `process($requiredDependencies, true)`.
      *
-     * @param array $requiredDependencies Required dependencies.
+     * @param array $requiredDependencies Required dependencies
      *
      * @see process()
      */
@@ -91,7 +105,7 @@ class Dependencies
      *
      * Calls `process($optionalDependencies, false)`.
      *
-     * @param array $optionalDependencies Optional dependencies.
+     * @param array $optionalDependencies Optional dependencies
      *
      * @see process()
      */
