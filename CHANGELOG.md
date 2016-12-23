@@ -5,7 +5,7 @@
 * Avoid loading unneeded depency autoloader if one of the alternative
   versions is already loaded
   ([#12](https://github.com/php-fedora/autoloader/issues/12),
-  [#11](https://github.com/php-fedora/autoloader/pull/13))
+  [#13](https://github.com/php-fedora/autoloader/pull/13))
 
 ## 0.2.1 (2016-10-28)
 
