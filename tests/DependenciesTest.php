@@ -9,9 +9,10 @@
  */
 namespace Fedora\Autoloader\Test;
 
+use PHPUnit\Framework\TestCase;
 use Fedora\Autoloader\Dependencies;
 
-class DependenciesTest extends \PHPUnit_Framework_TestCase
+class DependenciesTest extends TestCase
 {
     public function testRequiredExists()
     {
