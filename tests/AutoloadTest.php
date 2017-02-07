@@ -9,9 +9,10 @@
  */
 namespace Fedora;
 
+use PHPUnit\Framework\TestCase;
 use Fedora\Autoloader\Autoload;
 
-class AutoloadTest extends \PHPUnit_Framework_TestCase
+class AutoloadTest extends TestCase
 {
     /**
      * @group psr4
