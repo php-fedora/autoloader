@@ -1,11 +1,15 @@
 # CHANGELOG
 
-## not yet released
+## 1.0.0 (2017-03-13)
 
 * Avoid loading unneeded depency autoloader if one of the alternative
   versions is already loaded
   ([#12](https://github.com/php-fedora/autoloader/issues/12),
   [#13](https://github.com/php-fedora/autoloader/pull/13))
+* Fix for recent phpunit versions
+  ([#17](https://github.com/php-fedora/autoloader/pull/17))
+* Allow non-full-path in dependencies list and rely on include_path
+  ([#14](https://github.com/php-fedora/autoloader/pull/14))
 
 ## 0.2.1 (2016-10-28)
 
