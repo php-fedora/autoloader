@@ -10,6 +10,29 @@
 namespace Fedora\Autoloader;
 
 /**
+ * Check if given path is a full or relative path
+ *
+ * @param string $path to check
+ *
+ * @return boolean
+ */
+function isFullPath($path)
+{
+    if (DIRECTORY_SEPARATOR == '/') {
+        /* Unix/Linux */
+        return ($path[0] == '/');
+    }
+    /* Windows */
+    if (ctype_alpha($path[0]) && $path[1]==':') {
+        return true; // Drive
+    }
+    if (($path[0] == '/' && $path[1] == '/') || ($path[0] == '\\' && $path[1] == '\\')) {
+        return true; // UNC
+    }
+    return false;
+}
+
+/**
  * Scope isolated require.
  *
  * Prevents access to a class' $this/self from required files.
@@ -23,6 +46,12 @@ namespace Fedora\Autoloader;
  */
 function requireFile($file)
 {
+    if (!isFullPath($file)) {
+        // Search for relative path in the defined include_path
+        if ($path = stream_resolve_include_path($file)) {
+            $file = $path;
+        }
+    }
     if (is_file($file) && is_readable($file)) {
         require_once $file;
     } else {

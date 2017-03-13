@@ -127,4 +127,51 @@ class DependenciesTest extends TestCase
         $this->assertTrue(class_exists('Foo\\Bar'));
         $this->assertFalse(class_exists('Foo\\Bar\\Baz'));
     }
+
+    public function testIncludePathRequired()
+    {
+        // Check if PEAR is installed
+        $pear = false;
+        foreach (explode(PATH_SEPARATOR, get_include_path()) as $p) {
+            if (file_exists("$p/PEAR.php")) {
+                $pear = true;
+                break;
+            }
+        }
+        if (!$pear) {
+            $this->markTestSkipped('PEAR not found in include_path');
+        }
+        $this->assertFalse(class_exists('PEAR'));
+
+        Dependencies::required(array(
+            'PEAR.php',
+        ));
+
+        $this->assertTrue(class_exists('PEAR'));
+    }
+
+    /**
+     * @depends testIncludePathRequired
+     **/
+    public function testIncludePathOptional()
+    {
+        $this->assertFalse(class_exists('PEAR'));
+
+        Dependencies::optional(array(
+            'PEAR.php',
+        ));
+
+        $this->assertTrue(class_exists('PEAR'));
+    }
+
+    /**
+     * @expectedException RuntimeException
+     * @expectedExceptionMessageRegex /File not found.*DoesNotExist/
+     **/
+    public function testIncludePathNotFound()
+    {
+        Dependencies::required(array(
+            'DoesNotExist.php',
+        ));
+    }
 }
