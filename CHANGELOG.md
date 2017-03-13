@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 1.0.0 (2017-03-13)
+## 1.0.0-rc1 (2017-03-13)
 
 * Avoid loading unneeded depency autoloader if one of the alternative
   versions is already loaded
