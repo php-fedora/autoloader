@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.0.0 (2017-05-04)
+
+First stable release.  No changes since 1.0.0-rc1.  May the 4th be with you!
+
 ## 1.0.0-rc1 (2017-03-13)
 
 * Avoid loading unneeded depency autoloader if one of the alternative
