@@ -106,9 +106,13 @@ class DependenciesTest extends TestCase
         $this->assertTrue(class_exists('Foo\\Bar\\Baz'));
     }
 
+    /**
+     * Just testing that no error/exception is thrown here
+     */
     public function testOptionalNotExists()
     {
         Dependencies::optional(array(__DIR__.'/fixtures/DoesNotExist.php'));
+        $this->assertTrue(true);
     }
 
     public function testOptionalFirstExists()
