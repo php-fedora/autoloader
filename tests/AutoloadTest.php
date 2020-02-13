@@ -27,6 +27,16 @@ class AutoloadTest extends TestCase
     /**
      * @group psr4
      **/
+    public function testLoadClass()
+    {
+        $this->assertFalse(Autoload::loadClass('Foo\\Bar'));
+        Autoload::addPsr4('Foo', __DIR__.'/fixtures/Foo');
+        $this->assertTrue(Autoload::loadClass('Foo\\Bar'));
+    }
+
+    /**
+     * @group psr4
+     **/
     public function testAddPsr4Order()
     {
         $this->assertFalse(class_exists('Foo\\Bar'));

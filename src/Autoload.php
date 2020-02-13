@@ -203,12 +203,16 @@ class Autoload
      * Loads a class' file.
      *
      * This is the self function registered as an autoload handler.
+     *
+     * @return bool
      */
     public static function loadClass($class)
     {
         if ($file = static::findFileForClass($class)) {
             includeFile($file);
+            return true;
         }
+        return false;
     }
 
     /**
