@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 1.0.1 (2020-02-12)
+
+* Change `Autoload::loadClass()` to return if found
+  ([#19](https://github.com/php-fedora/autoloader/pull/19))
+* Fix Travis, remove php:nightly and hhvm
+  ([#20](https://github.com/php-fedora/autoloader/pull/20))
+* Allow PHPUnit 7 and 8
+  ([#21](https://github.com/php-fedora/autoloader/pull/21))
+
 ## 1.0.0 (2017-05-04)
 
 First stable release.  No changes since 1.0.0-rc1.  May the 4th be with you!
