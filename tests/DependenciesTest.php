@@ -34,6 +34,10 @@ class DependenciesTest extends TestCase
      **/
     public function testRequiredNotExistsLast()
     {
+        if (method_exists($this, 'expectExceptionMessageMatches')) { /* for PHPUnit 9+ */
+            $this->expectException('RuntimeException');
+            $this->expectExceptionMessageMatches('/Files not found.*DoesNotExist.*AlsoNotExist/');
+        }
         Dependencies::required(array(
             array(
                 __DIR__.'/fixtures/DoesNotExist.php',
@@ -48,6 +52,10 @@ class DependenciesTest extends TestCase
      **/
     public function testRequiredNotExists()
     {
+        if (method_exists($this, 'expectExceptionMessageMatches')) { /* for PHPUnit 9+ */
+            $this->expectException('RuntimeException');
+            $this->expectExceptionMessageMatches('/File not found.*DoesNotExist/');
+        }
         Dependencies::required(array(
             __DIR__.'/fixtures/DoesNotExist.php',
         ));
@@ -174,6 +182,10 @@ class DependenciesTest extends TestCase
      **/
     public function testIncludePathNotFound()
     {
+        if (method_exists($this, 'expectExceptionMessageMatches')) { /* for PHPUnit 9+ */
+            $this->expectException('RuntimeException');
+            $this->expectExceptionMessageMatches('/File not found.*DoesNotExist/');
+        }
         Dependencies::required(array(
             'DoesNotExist.php',
         ));
